@@ -61,6 +61,10 @@ Vue.use(Element, {
   size: Cookies.get('size') || 'medium' // set element-ui default size
 })
 
+import Avue from '@smallwei/avue';
+import '@smallwei/avue/lib/index.css';
+Vue.use(Avue);
+
 Vue.config.productionTip = false
 
 new Vue({

@@ -48,7 +48,7 @@
     </el-form>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright © 2019-2020 <a href="http://jeethink.vip">jeethink.vip</a> All Rights Reserved.</span>
+      <span>Copyright © 2019-2020 <a href="http://www.bosaidongnet.com">波赛东</a> All Rights Reserved.</span>
     </div>
   </div>
 </template>
