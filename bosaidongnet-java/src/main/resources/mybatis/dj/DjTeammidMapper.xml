@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeethink.project.dj.mapper.DjTeammidMapper">
+    
+    <resultMap type="DjTeammid" id="DjTeammidResult">
+        <result property="teammidId"    column="teammid_id"    />
+        <result property="memId"    column="mem_id"    />
+        <result property="teamId"    column="team_id"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectDjTeammidVo">
+        select teammid_id, mem_id, team_id, create_time from dj_teammid
+    </sql>
+
+    <select id="selectDjTeammidList" parameterType="DjTeammid" resultMap="DjTeammidResult">
+        <include refid="selectDjTeammidVo"/>
+        <where>  
+            <if test="memId != null "> and mem_id = #{memId}</if>
+            <if test="teamId != null "> and team_id = #{teamId}</if>
+        </where>
+    </select>
+    
+    <select id="selectDjTeammidById" parameterType="Long" resultMap="DjTeammidResult">
+        <include refid="selectDjTeammidVo"/>
+        where teammid_id = #{teammidId}
+    </select>
+        
+    <insert id="insertDjTeammid" parameterType="DjTeammid" useGeneratedKeys="true" keyProperty="teammidId">
+        insert into dj_teammid
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memId != null">mem_id,</if>
+            <if test="teamId != null">team_id,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memId != null">#{memId},</if>
+            <if test="teamId != null">#{teamId},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDjTeammid" parameterType="DjTeammid">
+        update dj_teammid
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="memId != null">mem_id = #{memId},</if>
+            <if test="teamId != null">team_id = #{teamId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where teammid_id = #{teammidId}
+    </update>
+
+    <delete id="deleteDjTeammidById" parameterType="Long">
+        delete from dj_teammid where teammid_id = #{teammidId}
+    </delete>
+
+    <delete id="deleteDjTeammidByIds" parameterType="String">
+        delete from dj_teammid where teammid_id in 
+        <foreach item="teammidId" collection="array" open="(" separator="," close=")">
+            #{teammidId}
+        </foreach>
+    </delete>
+    
+</mapper>

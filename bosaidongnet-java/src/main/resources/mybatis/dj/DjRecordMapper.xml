@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeethink.project.dj.mapper.DjRecordMapper">
+    
+    <resultMap type="DjRecord" id="DjRecordResult">
+        <result property="recordId"    column="record_id"    />
+        <result property="teamaId"    column="teama_id"    />
+        <result property="teambId"    column="teamb_id"    />
+        <result property="loseteamId"    column="loseteam_id"    />
+        <result property="winteamId"    column="winteam_id"    />
+        <result property="aScore"    column="a_score"    />
+        <result property="bScore"    column="b_score"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="matchId"    column="match_id"    />
+        <result property="rank"    column="rank"    />
+        <result property="userId"    column="user_id"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectDjRecordVo">
+        select record_id, teama_id, teamb_id, loseteam_id, winteam_id, a_score, b_score, start_time, end_time, match_id, rank, user_id, status, create_time, remark from dj_record
+    </sql>
+
+    <select id="selectDjRecordList" parameterType="DjRecord" resultMap="DjRecordResult">
+        <include refid="selectDjRecordVo"/>
+        <where>  
+            <if test="teamaId != null "> and teama_id = #{teamaId}</if>
+            <if test="teambId != null "> and teamb_id = #{teambId}</if>
+            <if test="loseteamId != null "> and loseteam_id = #{loseteamId}</if>
+            <if test="winteamId != null "> and winteam_id = #{winteamId}</if>
+            <if test="aScore != null "> and a_score = #{aScore}</if>
+            <if test="bScore != null "> and b_score = #{bScore}</if>
+            <if test="startTime != null "> and start_time &gt;= #{startTime}</if>
+            <if test="endTime != null "> and end_time &lt;= #{endTime}</if>
+            <if test="matchId != null "> and match_id = #{matchId}</if>
+            <if test="rank != null  and rank != ''"> and rank = #{rank}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="createTime != null "> and create_time &gt;= #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectDjRecordById" parameterType="Long" resultMap="DjRecordResult">
+        <include refid="selectDjRecordVo"/>
+        where record_id = #{recordId}
+    </select>
+        
+    <insert id="insertDjRecord" parameterType="DjRecord" useGeneratedKeys="true" keyProperty="recordId">
+        insert into dj_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teamaId != null">teama_id,</if>
+            <if test="teambId != null">teamb_id,</if>
+            <if test="loseteamId != null">loseteam_id,</if>
+            <if test="winteamId != null">winteam_id,</if>
+            <if test="aScore != null">a_score,</if>
+            <if test="bScore != null">b_score,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="matchId != null">match_id,</if>
+            <if test="rank != null">rank,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teamaId != null">#{teamaId},</if>
+            <if test="teambId != null">#{teambId},</if>
+            <if test="loseteamId != null">#{loseteamId},</if>
+            <if test="winteamId != null">#{winteamId},</if>
+            <if test="aScore != null">#{aScore},</if>
+            <if test="bScore != null">#{bScore},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="matchId != null">#{matchId},</if>
+            <if test="rank != null">#{rank},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDjRecord" parameterType="DjRecord">
+        update dj_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="teamaId != null">teama_id = #{teamaId},</if>
+            <if test="teambId != null">teamb_id = #{teambId},</if>
+            <if test="loseteamId != null">loseteam_id = #{loseteamId},</if>
+            <if test="winteamId != null">winteam_id = #{winteamId},</if>
+            <if test="aScore != null">a_score = #{aScore},</if>
+            <if test="bScore != null">b_score = #{bScore},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="matchId != null">match_id = #{matchId},</if>
+            <if test="rank != null">rank = #{rank},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where record_id = #{recordId}
+    </update>
+
+    <delete id="deleteDjRecordById" parameterType="Long">
+        delete from dj_record where record_id = #{recordId}
+    </delete>
+
+    <delete id="deleteDjRecordByIds" parameterType="String">
+        delete from dj_record where record_id in 
+        <foreach item="recordId" collection="array" open="(" separator="," close=")">
+            #{recordId}
+        </foreach>
+    </delete>
+    
+</mapper>

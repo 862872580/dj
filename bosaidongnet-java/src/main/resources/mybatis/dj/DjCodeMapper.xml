@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeethink.project.dj.mapper.DjCodeMapper">
+    
+    <resultMap type="DjCode" id="DjCodeResult">
+        <result property="codeId"    column="code_id"    />
+        <result property="code"    column="code"    />
+        <result property="score"    column="score"    />
+        <result property="type"    column="type"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="useTime"    column="use_time"    />
+        <result property="menId"    column="men_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectDjCodeVo">
+        select code_id, code, score, type, start_time, end_time, use_time, men_id, create_time, status from dj_code
+    </sql>
+
+    <select id="selectDjCodeList" parameterType="DjCode" resultMap="DjCodeResult">
+        <include refid="selectDjCodeVo"/>
+        <where>  
+            <if test="codeId != null "> and code_id = #{codeId}</if>
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="score != null "> and score = #{score}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="startTime != null "> and start_time &gt;= #{startTime}</if>
+            <if test="endTime != null "> and end_time &lt;= #{endTime}</if>
+            <if test="useTime != null "> and use_time = #{useTime}</if>
+            <if test="menId != null  and menId != ''"> and men_id = #{menId}</if>
+            <if test="createTime != null "> and create_time &gt;= #{createTime}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectDjCodeById" parameterType="Long" resultMap="DjCodeResult">
+        <include refid="selectDjCodeVo"/>
+        where code_id = #{codeId}
+    </select>
+        
+    <insert id="insertDjCode" parameterType="DjCode" useGeneratedKeys="true" keyProperty="codeId">
+        insert into dj_code
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null">code,</if>
+            <if test="score != null">score,</if>
+            <if test="type != null">type,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="useTime != null">use_time,</if>
+            <if test="menId != null">men_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null">#{code},</if>
+            <if test="score != null">#{score},</if>
+            <if test="type != null">#{type},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="useTime != null">#{useTime},</if>
+            <if test="menId != null">#{menId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDjCode" parameterType="DjCode">
+        update dj_code
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">code = #{code},</if>
+            <if test="score != null">score = #{score},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="useTime != null">use_time = #{useTime},</if>
+            <if test="menId != null">men_id = #{menId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where code_id = #{codeId}
+    </update>
+
+    <delete id="deleteDjCodeById" parameterType="Long">
+        delete from dj_code where code_id = #{codeId}
+    </delete>
+
+    <delete id="deleteDjCodeByIds" parameterType="String">
+        delete from dj_code where code_id in 
+        <foreach item="codeId" collection="array" open="(" separator="," close=")">
+            #{codeId}
+        </foreach>
+    </delete>
+    
+</mapper>

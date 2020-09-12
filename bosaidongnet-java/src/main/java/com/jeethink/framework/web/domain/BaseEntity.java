@@ -38,11 +38,11 @@ public class BaseEntity implements Serializable
 
     /** 开始时间 */
     @JsonIgnore
-    private String beginTime;
+    private Date beginTime;
 
     /** 结束时间 */
     @JsonIgnore
-    private String endTime;
+    private Date endTime;
 
     /** 请求参数 */
     private Map<String, Object> params;
@@ -107,22 +107,22 @@ public class BaseEntity implements Serializable
         this.remark = remark;
     }
 
-    public String getBeginTime()
+    public Date getBeginTime()
     {
         return beginTime;
     }
 
-    public void setBeginTime(String beginTime)
+    public void setBeginTime(Date beginTime)
     {
         this.beginTime = beginTime;
     }
 
-    public String getEndTime()
+    public Date getEndTime()
     {
         return endTime;
     }
 
-    public void setEndTime(String endTime)
+    public void setEndTime(Date endTime)
     {
         this.endTime = endTime;
     }

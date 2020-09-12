@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeethink.project.dj.mapper.DjMarkMapper">
+    
+    <resultMap type="DjMark" id="DjMarkResult">
+        <result property="markId"    column="mark_id"    />
+        <result property="winteamId"    column="winteam_id"    />
+        <result property="loseteamId"    column="loseteam_id"    />
+        <result property="recordId"    column="record_id"    />
+        <result property="photo"    column="photo"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectDjMarkVo">
+        select mark_id, winteam_id, loseteam_id, record_id, photo, create_time, remark from dj_mark
+    </sql>
+
+    <select id="selectDjMarkList" parameterType="DjMark" resultMap="DjMarkResult">
+        <include refid="selectDjMarkVo"/>
+        <where>  
+            <if test="markId != null "> and mark_id = #{markId}</if>
+            <if test="winteamId != null "> and winteam_id = #{winteamId}</if>
+            <if test="loseteamId != null "> and loseteam_id = #{loseteamId}</if>
+            <if test="recordId != null "> and record_id = #{recordId}</if>
+            <if test="createTime != null "> and create_time &gt;= #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectDjMarkById" parameterType="Long" resultMap="DjMarkResult">
+        <include refid="selectDjMarkVo"/>
+        where mark_id = #{markId}
+    </select>
+        
+    <insert id="insertDjMark" parameterType="DjMark" useGeneratedKeys="true" keyProperty="markId">
+        insert into dj_mark
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="winteamId != null">winteam_id,</if>
+            <if test="loseteamId != null">loseteam_id,</if>
+            <if test="recordId != null">record_id,</if>
+            <if test="photo != null">photo,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="winteamId != null">#{winteamId},</if>
+            <if test="loseteamId != null">#{loseteamId},</if>
+            <if test="recordId != null">#{recordId},</if>
+            <if test="photo != null">#{photo},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDjMark" parameterType="DjMark">
+        update dj_mark
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="winteamId != null">winteam_id = #{winteamId},</if>
+            <if test="loseteamId != null">loseteam_id = #{loseteamId},</if>
+            <if test="recordId != null">record_id = #{recordId},</if>
+            <if test="photo != null">photo = #{photo},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where mark_id = #{markId}
+    </update>
+
+    <delete id="deleteDjMarkById" parameterType="Long">
+        delete from dj_mark where mark_id = #{markId}
+    </delete>
+
+    <delete id="deleteDjMarkByIds" parameterType="String">
+        delete from dj_mark where mark_id in 
+        <foreach item="markId" collection="array" open="(" separator="," close=")">
+            #{markId}
+        </foreach>
+    </delete>
+    
+</mapper>

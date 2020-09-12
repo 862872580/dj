@@ -99,6 +99,23 @@ public class JeeThinkConfig
     }
 
     /**
+     * 获取活动上传路径
+     */
+    public static String getActivePhotoPath()
+    {
+        return getProfile() + "/Active";
+    }
+
+    /**
+     * 获取比赛照片上传路径
+     */
+    public static String getMatchPhotoPath()
+    {
+        return getProfile() + "/Match";
+    }
+
+
+    /**
      * 获取下载路径
      */
     public static String getDownloadPath()

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeethink.project.dj.mapper.DjTeamMapper">
+    
+    <resultMap type="DjTeam" id="DjTeamResult">
+        <result property="teamId"    column="team_id"    />
+        <result property="teamName"    column="team_name"    />
+        <result property="memId"    column="mem_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="matchId"    column="match_id"    />
+        <result property="activeId"    column="active_id"    />
+        <result property="status"    column="status"    />
+        <result property="fullTime"    column="full_time"    />
+        <result property="signTime"    column="sign_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectDjTeamVo">
+        select team_id, team_name, mem_id, create_by, match_id, active_id, status, full_time, sign_time, update_time, create_time, remark from dj_team
+    </sql>
+
+    <select id="selectDjTeamList" parameterType="DjTeam" resultMap="DjTeamResult">
+        <include refid="selectDjTeamVo"/>
+        <where>  
+            <if test="teamName != null  and teamName != ''"> and team_name like concat('%', #{teamName}, '%')</if>
+            <if test="memId != null  and memId != ''"> and mem_id = #{memId}</if>
+            <if test="matchId != null "> and match_id = #{matchId}</if>
+            <if test="activeId != null "> and active_id = #{activeId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="fullTime != null "> and full_time &gt;= #{fullTime}</if>
+            <if test="signTime != null "> and sign_time &lt;= #{signTime}</if>
+            <if test="updateTime != null "> and update_time &gt;= #{updateTime}</if>
+            <if test="createTime != null "> and create_time &gt;= #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectDjTeamById" parameterType="Long" resultMap="DjTeamResult">
+        <include refid="selectDjTeamVo"/>
+        where team_id = #{teamId}
+    </select>
+        
+    <insert id="insertDjTeam" parameterType="DjTeam" useGeneratedKeys="true" keyProperty="teamId">
+        insert into dj_team
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teamName != null">team_name,</if>
+            <if test="memId != null">mem_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="matchId != null">match_id,</if>
+            <if test="activeId != null">active_id,</if>
+            <if test="status != null">status,</if>
+            <if test="fullTime != null">full_time,</if>
+            <if test="signTime != null">sign_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teamName != null">#{teamName},</if>
+            <if test="memId != null">#{memId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="matchId != null">#{matchId},</if>
+            <if test="activeId != null">#{activeId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="fullTime != null">#{fullTime},</if>
+            <if test="signTime != null">#{signTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDjTeam" parameterType="DjTeam">
+        update dj_team
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="teamName != null">team_name = #{teamName},</if>
+            <if test="memId != null">mem_id = #{memId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="matchId != null">match_id = #{matchId},</if>
+            <if test="activeId != null">active_id = #{activeId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="fullTime != null">full_time = #{fullTime},</if>
+            <if test="signTime != null">sign_time = #{signTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where team_id = #{teamId}
+    </update>
+
+    <delete id="deleteDjTeamById" parameterType="Long">
+        delete from dj_team where team_id = #{teamId}
+    </delete>
+
+    <delete id="deleteDjTeamByIds" parameterType="String">
+        delete from dj_team where team_id in 
+        <foreach item="teamId" collection="array" open="(" separator="," close=")">
+            #{teamId}
+        </foreach>
+    </delete>
+    
+</mapper>
