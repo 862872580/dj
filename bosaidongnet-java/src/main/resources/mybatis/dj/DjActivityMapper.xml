@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jeethink.project.dj.mapper.DjActivityMapper">
-    
+
     <resultMap type="DjActivity" id="DjActivityResult">
         <result property="activeId"    column="active_id"    />
         <result property="activeName"    column="active_name"    />
@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="activeAddress"    column="active_address"    />
         <result property="display"    column="display"    />
         <result property="activeContent"    column="active_content"    />
+        <result property="teamtotal"    column="teamtotal"    />
         <result property="startTime"    column="start_time"    />
         <result property="endTime"    column="end_time"    />
         <result property="createBy"    column="create_by"    />
@@ -21,28 +22,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectDjActivityVo">
-        select active_id, active_name, photo, active_address, display, active_content, start_time, end_time, create_by, update_time, status, create_time, remark from dj_activity
+        select active_id, active_name, photo, active_address, display, active_content, teamtotal, start_time, end_time, create_by, update_time, status, create_time, remark from dj_activity
     </sql>
 
     <select id="selectDjActivityList" parameterType="DjActivity" resultMap="DjActivityResult">
         <include refid="selectDjActivityVo"/>
-        <where>  
-            <if test="activeId != null "> and active_id = #{activeId}</if>
+        <where>
             <if test="activeName != null  and activeName != ''"> and active_name like concat('%', #{activeName}, '%')</if>
             <if test="activeAddress != null  and activeAddress != ''"> and active_address = #{activeAddress}</if>
             <if test="display != null  and display != ''"> and display = #{display}</if>
+            <if test="teamtotal != null "> and teamtotal = #{teamtotal}</if>
             <if test="startTime != null "> and start_time &gt;= #{startTime}</if>
             <if test="endTime != null "> and end_time &lt;= #{endTime}</if>
-            <if test="createBy != null "> and create_by = #{createBy}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
             <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="activeId != null  and activeId != ''"> and active_id = #{activeId}</if>
         </where>
     </select>
-    
+
     <select id="selectDjActivityById" parameterType="Long" resultMap="DjActivityResult">
         <include refid="selectDjActivityVo"/>
         where active_id = #{activeId}
     </select>
-        
+
     <insert id="insertDjActivity" parameterType="DjActivity" useGeneratedKeys="true" keyProperty="activeId">
         insert into dj_activity
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -51,6 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="activeAddress != null">active_address,</if>
             <if test="display != null">display,</if>
             <if test="activeContent != null">active_content,</if>
+            <if test="teamtotal != null">teamtotal,</if>
             <if test="startTime != null">start_time,</if>
             <if test="endTime != null">end_time,</if>
             <if test="createBy != null">create_by,</if>
@@ -58,13 +61,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null">status,</if>
             <if test="createTime != null">create_time,</if>
             <if test="remark != null">remark,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="activeName != null">#{activeName},</if>
             <if test="photo != null">#{photo},</if>
             <if test="activeAddress != null">#{activeAddress},</if>
             <if test="display != null">#{display},</if>
             <if test="activeContent != null">#{activeContent},</if>
+            <if test="teamtotal != null">#{teamtotal},</if>
             <if test="startTime != null">#{startTime},</if>
             <if test="endTime != null">#{endTime},</if>
             <if test="createBy != null">#{createBy},</if>
@@ -72,7 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null">#{status},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="remark != null">#{remark},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateDjActivity" parameterType="DjActivity">
@@ -83,6 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="activeAddress != null">active_address = #{activeAddress},</if>
             <if test="display != null">display = #{display},</if>
             <if test="activeContent != null">active_content = #{activeContent},</if>
+            <if test="teamtotal != null">teamtotal = #{teamtotal},</if>
             <if test="startTime != null">start_time = #{startTime},</if>
             <if test="endTime != null">end_time = #{endTime},</if>
             <if test="createBy != null">create_by = #{createBy},</if>
@@ -99,10 +104,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteDjActivityByIds" parameterType="String">
-        delete from dj_activity where active_id in 
+        delete from dj_activity where active_id in
         <foreach item="activeId" collection="array" open="(" separator="," close=")">
             #{activeId}
         </foreach>
     </delete>
-    
+
 </mapper>

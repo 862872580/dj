@@ -1,6 +1,8 @@
 package com.jeethink.project.dj.service.impl;
 
 import java.util.List;
+import java.util.UUID;
+
 import com.jeethink.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +14,7 @@ import com.jeethink.project.dj.service.IDjMemberService;
  * 选手用户Service业务层处理
  * 
  * @author miao
- * @date 2020-09-12
+ * @date 2020-09-14
  */
 @Service
 public class DjMemberServiceImpl implements IDjMemberService {
@@ -49,6 +51,9 @@ public class DjMemberServiceImpl implements IDjMemberService {
      */
     @Override
     public int insertDjMember(DjMember djMember) {
+        djMember.setStatus("1");
+        String uuid = UUID.randomUUID().toString();
+        djMember.setMenId(uuid);
         djMember.setCreateTime(DateUtils.getNowDate());
         return djMemberMapper.insertDjMember(djMember);
     }
@@ -85,5 +90,15 @@ public class DjMemberServiceImpl implements IDjMemberService {
     @Override
     public int deleteDjMemberById(String menId) {
         return djMemberMapper.deleteDjMemberById(menId);
+    }
+
+    /**
+     * 查询选手用户信息
+     * @param openid 微信id
+     * @return 结果
+     */
+    @Override
+    public DjMember selectDjMemberByOpenId(String openid) {
+        return djMemberMapper.selectDjMemberByOpenId(openid);
     }
 }

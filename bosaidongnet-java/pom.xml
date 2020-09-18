@@ -35,6 +35,8 @@
 		<poi.version>3.17</poi.version>
 		<oshi.version>3.9.1</oshi.version>
 		<velocity.version>1.7</velocity.version>
+
+		<weixin-java-miniapp.version>3.9.0</weixin-java-miniapp.version>
 	</properties>
 
 	<dependencies>
@@ -163,7 +165,21 @@
 			<artifactId>jjwt</artifactId>
 			<version>${jwt.version}</version>
 		</dependency>
-		
+
+		<!--lombok		-->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.github.binarywang</groupId>
+			<artifactId>weixin-java-miniapp</artifactId>
+			<version>${weixin-java-miniapp.version}</version>
+		</dependency>
+
 		<!-- swagger2-->
 		<dependency>
 			<groupId>io.springfox</groupId>

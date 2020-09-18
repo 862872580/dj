@@ -48,9 +48,11 @@ public class DjTeamServiceImpl implements IDjTeamService {
      * @return 结果
      */
     @Override
-    public int insertDjTeam(DjTeam djTeam) {
+    public DjTeam insertDjTeam(DjTeam djTeam) {
+        djTeam.setStatus("1");
         djTeam.setCreateTime(DateUtils.getNowDate());
-        return djTeamMapper.insertDjTeam(djTeam);
+        djTeamMapper.insertDjTeam(djTeam);
+        return djTeam;
     }
 
     /**
@@ -85,5 +87,26 @@ public class DjTeamServiceImpl implements IDjTeamService {
     @Override
     public int deleteDjTeamById(Long teamId) {
         return djTeamMapper.deleteDjTeamById(teamId);
+    }
+
+    /**
+     * 设置队伍满人状态
+     * @param djTeam 队伍信息
+     * @return 结果
+     */
+    @Override
+    public int updateFullTime(DjTeam djTeam) {
+        return djTeamMapper.updateFullTime(djTeam);
+    }
+
+    /**
+     * 判断队伍名称是否重复
+     * @param teamName 队伍名称
+     * @return 结果
+     */
+    @Override
+    public DjTeam selectDjTeamByName(String teamName) {
+        teamName = teamName.trim();
+        return djTeamMapper.selectDjTeamByName(teamName);
     }
 }

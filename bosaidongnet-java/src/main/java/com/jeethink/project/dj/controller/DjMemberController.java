@@ -1,6 +1,8 @@
 package com.jeethink.project.dj.controller;
 
 import java.util.List;
+import java.util.UUID;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +26,7 @@ import com.jeethink.framework.web.page.TableDataInfo;
  * 选手用户Controller
  * 
  * @author miao
- * @date 2020-09-12
+ * @date 2020-09-14
  */
 @RestController
 @RequestMapping("/dj/member")
@@ -55,10 +57,10 @@ public class DjMemberController extends BaseController {
         return util.exportExcel(list, "member");
     }
 
+
     /**
      * 获取选手用户详细信息
      */
-    @PreAuthorize("@ss.hasPermi('dj:member:query')")
     @GetMapping(value = "/{menId}")
     public AjaxResult getInfo(@PathVariable("menId") String menId) {
         return AjaxResult.success(djMemberService.selectDjMemberById(menId));
@@ -67,7 +69,6 @@ public class DjMemberController extends BaseController {
     /**
      * 新增选手用户
      */
-    @PreAuthorize("@ss.hasPermi('dj:member:add')")
     @Log(title = "选手用户", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody DjMember djMember) {
@@ -77,20 +78,30 @@ public class DjMemberController extends BaseController {
     /**
      * 修改选手用户
      */
-    @PreAuthorize("@ss.hasPermi('dj:member:edit')")
     @Log(title = "选手用户", businessType = BusinessType.UPDATE)
-    @PutMapping
-    public AjaxResult edit(@RequestBody DjMember djMember) {
+    @PostMapping("/update")
+    public AjaxResult edit(DjMember djMember) {
         return toAjax(djMemberService.updateDjMember(djMember));
     }
 
     /**
      * 删除选手用户
      */
-    @PreAuthorize("@ss.hasPermi('dj:member:remove')")
     @Log(title = "选手用户", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{menIds}")
     public AjaxResult remove(@PathVariable String[] menIds) {
         return toAjax(djMemberService.deleteDjMemberByIds(menIds));
+    }
+
+    /**
+     * 判断用户信息是否填写
+     */
+    @GetMapping(value = "/joinauth")
+    public AjaxResult getJoinAuth(String menId) {
+        String gameName = djMemberService.selectDjMemberById(menId).getGameName();
+        if (gameName == null || gameName.equals("")){
+            return AjaxResult.success("0");
+        }
+        return AjaxResult.success("1");
     }
 }

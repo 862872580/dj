@@ -1,12 +1,24 @@
 package com.jeethink.project.dj.service.impl;
 
+import java.io.IOException;
 import java.util.List;
 import com.jeethink.common.utils.DateUtils;
+import com.jeethink.common.utils.ServletUtils;
+import com.jeethink.common.utils.file.FileUploadUtils;
+import com.jeethink.framework.aspectj.lang.annotation.Log;
+import com.jeethink.framework.aspectj.lang.enums.BusinessType;
+import com.jeethink.framework.config.JeeThinkConfig;
+import com.jeethink.framework.security.LoginUser;
+import com.jeethink.framework.security.service.TokenService;
+import com.jeethink.framework.web.domain.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.jeethink.project.dj.mapper.DjActivityMapper;
 import com.jeethink.project.dj.domain.DjActivity;
 import com.jeethink.project.dj.service.IDjActivityService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 活动Service业务层处理
@@ -18,6 +30,9 @@ import com.jeethink.project.dj.service.IDjActivityService;
 public class DjActivityServiceImpl implements IDjActivityService {
     @Autowired
     private DjActivityMapper djActivityMapper;
+
+    @Autowired
+    private TokenService tokenService;
 
     /**
      * 查询活动
@@ -49,6 +64,11 @@ public class DjActivityServiceImpl implements IDjActivityService {
      */
     @Override
     public int insertDjActivity(DjActivity djActivity) {
+        //设置创建人
+        String nickName = tokenService.getLoginUser(ServletUtils.getRequest()).getUser().getNickName();
+        djActivity.setCreateBy(nickName);
+
+        // 更新缓存用户信息
         djActivity.setCreateTime(DateUtils.getNowDate());
         return djActivityMapper.insertDjActivity(djActivity);
     }
@@ -86,4 +106,10 @@ public class DjActivityServiceImpl implements IDjActivityService {
     public int deleteDjActivityById(Long activeId) {
         return djActivityMapper.deleteDjActivityById(activeId);
     }
+
+    @Override
+    public boolean updateActivePhoto(long activeId, String photo) {
+        return djActivityMapper.updateActivePhoto(activeId, photo) > 0;
+    }
+
 }

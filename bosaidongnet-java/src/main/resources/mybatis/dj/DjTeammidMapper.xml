@@ -6,20 +6,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="DjTeammid" id="DjTeammidResult">
         <result property="teammidId"    column="teammid_id"    />
-        <result property="memId"    column="mem_id"    />
+        <result property="menId"    column="men_id"    />
         <result property="teamId"    column="team_id"    />
         <result property="createTime"    column="create_time"    />
+        <result property="activeId"    column="active_id"    />
     </resultMap>
 
     <sql id="selectDjTeammidVo">
-        select teammid_id, mem_id, team_id, create_time from dj_teammid
+        select teammid_id, men_id, team_id, create_time, active_id from dj_teammid
     </sql>
 
     <select id="selectDjTeammidList" parameterType="DjTeammid" resultMap="DjTeammidResult">
         <include refid="selectDjTeammidVo"/>
         <where>  
-            <if test="memId != null "> and mem_id = #{memId}</if>
+            <if test="menId != null  and menId != ''"> and men_id = #{menId}</if>
             <if test="teamId != null "> and team_id = #{teamId}</if>
+            <if test="createTime != null "> and create_time &gt;= #{createTime}</if>
+            <if test="activeId != null "> and active_id = #{activeId}</if>
         </where>
     </select>
     
@@ -27,27 +30,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectDjTeammidVo"/>
         where teammid_id = #{teammidId}
     </select>
+
+    <select id="selectDjTeammidByMenId" parameterType="DjTeammid" resultMap="DjTeammidResult">
+        <include refid="selectDjTeammidVo"/>
+        where men_id = #{menId} and active_id = #{activeId}
+    </select>
         
     <insert id="insertDjTeammid" parameterType="DjTeammid" useGeneratedKeys="true" keyProperty="teammidId">
         insert into dj_teammid
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="memId != null">mem_id,</if>
+            <if test="menId != null">men_id,</if>
             <if test="teamId != null">team_id,</if>
             <if test="createTime != null">create_time,</if>
+            <if test="activeId != null">active_id,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="memId != null">#{memId},</if>
+            <if test="menId != null">#{menId},</if>
             <if test="teamId != null">#{teamId},</if>
             <if test="createTime != null">#{createTime},</if>
+            <if test="activeId != null">#{activeId},</if>
          </trim>
     </insert>
 
     <update id="updateDjTeammid" parameterType="DjTeammid">
         update dj_teammid
         <trim prefix="SET" suffixOverrides=",">
-            <if test="memId != null">mem_id = #{memId},</if>
+            <if test="menId != null">men_id = #{menId},</if>
             <if test="teamId != null">team_id = #{teamId},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="activeId != null">active_id = #{activeId},</if>
         </trim>
         where teammid_id = #{teammidId}
     </update>

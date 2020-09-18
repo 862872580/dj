@@ -32,7 +32,7 @@ public interface IDjTeamService {
      * @param djTeam 队伍
      * @return 结果
      */
-    public int insertDjTeam(DjTeam djTeam);
+    public DjTeam insertDjTeam(DjTeam djTeam);
 
     /**
      * 修改队伍
@@ -57,4 +57,13 @@ public interface IDjTeamService {
      * @return 结果
      */
     public int deleteDjTeamById(Long teamId);
+
+    /**
+     * 跟新队伍信息
+     * @param djTeam 队伍信息
+     * @return
+     */
+    int updateFullTime(DjTeam djTeam);
+
+    DjTeam selectDjTeamByName(String teamName);
 }

@@ -2,6 +2,8 @@ package com.jeethink.project.dj.mapper;
 
 import java.util.List;
 import com.jeethink.project.dj.domain.DjTeam;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * 队伍Mapper接口
@@ -57,4 +59,19 @@ public interface DjTeamMapper {
      * @return 结果
      */
     public int deleteDjTeamByIds(Long[] teamIds);
+
+    /**
+     * 跟新队伍信息
+     * @param djTeam 队伍信息
+     * @return 结果
+     */
+    @Update("update dj_team set full_time = #{fullTime}, status = #{status} where team_id = #{teamId}")
+    int updateFullTime(DjTeam djTeam);
+
+    /**
+     * 根据名称查询队伍信息
+     * @param teamName 队伍名称
+     * @return 结果
+     */
+    DjTeam selectDjTeamByName(String teamName);
 }

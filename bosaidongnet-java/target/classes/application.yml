@@ -57,7 +57,7 @@ spring:
   # redis 配置
   redis:
     # 地址
-    host: localhost
+    host: 192.168.2.112
     # 端口，默认为6379
     port: 6379
     # 密码
@@ -126,3 +126,12 @@ gen:
   autoRemovePre: false
   # 表前缀（生成类名不会包含表前缀，多个用逗号分隔）
   tablePrefix: sys_
+
+wx:
+  miniapp:
+    configs:
+      - appid: wx873594d3b167fae5 #微信小程序的appid
+        secret: f738fe938a110a13a2dc090783aa451b #微信小程序的Secret
+        token: #微信小程序消息服务器配置的token
+        aesKey: #微信小程序消息服务器配置的EncodingAESKey
+        msgDataFormat: JSON

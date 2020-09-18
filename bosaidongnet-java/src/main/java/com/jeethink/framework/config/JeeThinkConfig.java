@@ -103,7 +103,15 @@ public class JeeThinkConfig
      */
     public static String getActivePhotoPath()
     {
-        return getProfile() + "/Active";
+        return getProfile() + "/active";
+    }
+
+    /**
+     * 获取用户上传路径
+     */
+    public static String getHandImagePath()
+    {
+        return getProfile() + "/handimage";
     }
 
     /**

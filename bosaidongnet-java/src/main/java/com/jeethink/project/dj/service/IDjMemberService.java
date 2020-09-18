@@ -7,7 +7,7 @@ import com.jeethink.project.dj.domain.DjMember;
  * 选手用户Service接口
  * 
  * @author miao
- * @date 2020-09-12
+ * @date 2020-09-14
  */
 public interface IDjMemberService {
     /**
@@ -57,4 +57,11 @@ public interface IDjMemberService {
      * @return 结果
      */
     public int deleteDjMemberById(String menId);
+
+    /**
+     * 查询选手用户是否存在
+     * @param openid 微信id
+     * @return 结果
+     */
+    DjMember selectDjMemberByOpenId(String openid);
 }

@@ -1,6 +1,7 @@
 package com.jeethink.project.dj.service.impl;
 
 import java.util.List;
+
 import com.jeethink.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,5 +85,25 @@ public class DjTeammidServiceImpl implements IDjTeammidService {
     @Override
     public int deleteDjTeammidById(Long teammidId) {
         return djTeammidMapper.deleteDjTeammidById(teammidId);
+    }
+
+    @Override
+    public int countDjTeammid(long teamId) {
+        return djTeammidMapper.countDjTeammid(teamId);
+    }
+
+    @Override
+    public DjTeammid selectDjTeammidByMenId(DjTeammid djTeammid) {
+        return djTeammidMapper.selectDjTeammidByMenId(djTeammid);
+    }
+
+    @Override
+    public int deleteDjTeammidByMenId(String menId, long teamId) {
+        return djTeammidMapper.deleteDjTeammidByMenId(menId, teamId);
+    }
+
+    @Override
+    public int deleteDjTeammidByTeamId(long teamId) {
+        return djTeammidMapper.deleteDjTeammidByTeamId(teamId);
     }
 }

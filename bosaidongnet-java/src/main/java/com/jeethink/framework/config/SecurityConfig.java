@@ -98,6 +98,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                         "/**/*.css",
                         "/**/*.js"
                 ).permitAll()
+                //添加测试接口
+                .antMatchers("/dj/activity/photo").anonymous()
+                .antMatchers("/dj/activity/app/list").anonymous()
+                .antMatchers("/dj/team/**").anonymous()
+                .antMatchers("/dj/teammid/**").anonymous()
+                .antMatchers("/dj/member/**").anonymous()
+                .antMatchers("/wx/user/{appid}/login").anonymous()
+
                 .antMatchers("/profile/**").anonymous()
                 .antMatchers("/common/download**").anonymous()
                 .antMatchers("/common/download/resource**").anonymous()
@@ -109,7 +117,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()
                 .and()
-                .headers().frameOptions().disable();
+                .headers().frameOptions().disable()
+                .and()
+                .cors()
+                .and()
+                .csrf()
+                .disable();
         httpSecurity.logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler);
         // 添加JWT filter
         httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);

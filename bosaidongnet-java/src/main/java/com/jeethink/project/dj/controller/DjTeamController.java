@@ -1,6 +1,10 @@
 package com.jeethink.project.dj.controller;
 
 import java.util.List;
+
+
+import com.jeethink.project.dj.domain.DjTeammid;
+import com.jeethink.project.dj.service.IDjTeammidService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,10 +36,12 @@ public class DjTeamController extends BaseController {
     @Autowired
     private IDjTeamService djTeamService;
 
+    @Autowired
+    private IDjTeammidService djTeammidService;
+
     /**
      * 查询队伍列表
      */
-    @PreAuthorize("@ss.hasPermi('dj:team:list')")
     @GetMapping("/list")
     public TableDataInfo list(DjTeam djTeam) {
         startPage();
@@ -44,9 +50,18 @@ public class DjTeamController extends BaseController {
     }
 
     /**
+     * 查询满人队伍列表
+     */
+    @GetMapping("/fullteam")
+    public TableDataInfo fullTeamList(DjTeam djTeam) {
+        djTeam.setStatus("2");
+        List<DjTeam> list = djTeamService.selectDjTeamList(djTeam);
+        return getDataTable(list);
+    }
+
+    /**
      * 导出队伍列表
      */
-    @PreAuthorize("@ss.hasPermi('dj:team:export')")
     @Log(title = "队伍", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public AjaxResult export(DjTeam djTeam) {
@@ -58,28 +73,81 @@ public class DjTeamController extends BaseController {
     /**
      * 获取队伍详细信息
      */
-    @PreAuthorize("@ss.hasPermi('dj:team:query')")
     @GetMapping(value = "/{teamId}")
     public AjaxResult getInfo(@PathVariable("teamId") Long teamId) {
         return AjaxResult.success(djTeamService.selectDjTeamById(teamId));
     }
 
     /**
+     * 判断是否可以创建队伍
+     */
+    @GetMapping("/decide")
+    public AjaxResult decide(DjTeammid djTeammid) {
+        List<DjTeammid> djTeammids = djTeammidService.selectDjTeammidList(djTeammid);
+        if (djTeammids == null || djTeammids.size() == 0){
+            return AjaxResult.success("1");
+        }
+        return AjaxResult.success("0");
+    }
+
+    /**
+     * 判断是否是队长
+     */
+    @GetMapping("/captain")
+    public AjaxResult iscaptain(DjTeam djTeam) {
+        if (djTeamService.selectDjTeamList(djTeam) != null){
+            return AjaxResult.success("1");
+        }
+        return AjaxResult.success("0");
+    }
+
+    /**
+     * 判断是否有队长
+     */
+    @GetMapping("/havecap")
+    public AjaxResult haveCap(long teamId) {
+        String menId = djTeamService.selectDjTeamById(teamId).getMenId();
+        if (menId == null || menId.equals("")){
+            return AjaxResult.success("0");
+        }
+        return AjaxResult.success("1");
+    }
+
+    /**
      * 新增队伍
      */
-    @PreAuthorize("@ss.hasPermi('dj:team:add')")
     @Log(title = "队伍", businessType = BusinessType.INSERT)
-    @PostMapping
-    public AjaxResult add(@RequestBody DjTeam djTeam) {
-        return toAjax(djTeamService.insertDjTeam(djTeam));
+    @PostMapping("/insert")
+    public AjaxResult add(DjTeam djTeam,int isCap) {
+
+        String teamName = djTeam.getTeamName();
+        if(djTeamService.selectDjTeamByName(teamName) != null){
+            return AjaxResult.error("队伍名称重复");
+        }
+
+        //添加队伍,添加队伍关系
+        DjTeammid djTeammid = new DjTeammid();
+        djTeammid.setMenId(djTeam.getMenId());
+        djTeammid.setCreateBy(djTeam.getMenId());
+
+        //如果不是队长,设置队长信息为空
+        if (isCap == 0){
+            djTeam.setMenId(null);
+        }
+        djTeammid.setTeamId(djTeamService.insertDjTeam(djTeam).getTeamId());
+        djTeammid.setActiveId(djTeam.getActiveId());
+        if (djTeammidService.insertDjTeammid(djTeammid) > 0) {
+            return AjaxResult.success();
+        }
+
+        return AjaxResult.error("添加失败");
     }
 
     /**
      * 修改队伍
      */
-    @PreAuthorize("@ss.hasPermi('dj:team:edit')")
     @Log(title = "队伍", businessType = BusinessType.UPDATE)
-    @PutMapping
+    @PostMapping("/update")
     public AjaxResult edit(@RequestBody DjTeam djTeam) {
         return toAjax(djTeamService.updateDjTeam(djTeam));
     }
@@ -87,7 +155,6 @@ public class DjTeamController extends BaseController {
     /**
      * 删除队伍
      */
-    @PreAuthorize("@ss.hasPermi('dj:team:remove')")
     @Log(title = "队伍", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{teamIds}")
     public AjaxResult remove(@PathVariable Long[] teamIds) {

@@ -2,6 +2,7 @@ package com.jeethink.project.dj.mapper;
 
 import java.util.List;
 import com.jeethink.project.dj.domain.DjActivity;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * 活动Mapper接口
@@ -57,4 +58,13 @@ public interface DjActivityMapper {
      * @return 结果
      */
     public int deleteDjActivityByIds(Long[] activeIds);
+
+    /**
+     * 跟新活动图片
+     * @param activeId 活动ID
+     * @param photo 图片位置
+     * @return 结果
+     */
+    @Update("update dj_activity set photo = #{photo} where active_id = #{activeId}")
+    public int updateActivePhoto(long activeId, String photo);
 }

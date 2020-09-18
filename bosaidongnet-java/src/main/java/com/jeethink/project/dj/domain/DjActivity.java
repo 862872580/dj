@@ -9,9 +9,9 @@ import com.jeethink.framework.web.domain.BaseEntity;
 
 /**
  * 活动对象 dj_activity
- * 
+ *
  * @author miao
- * @date 2020-09-12
+ * @date 2020-09-17
  */
 public class DjActivity extends BaseEntity{
     private static final long serialVersionUID = 1L;
@@ -38,13 +38,17 @@ public class DjActivity extends BaseEntity{
     @Excel(name = "活动内容")
     private String activeContent;
 
+    /** 允许参加队伍个数 */
+    @Excel(name = "允许参加队伍个数")
+    private Long teamtotal;
+
     /** 开始时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "开始时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date startTime;
 
     /** 结束时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "结束时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date endTime;
 
@@ -94,6 +98,13 @@ public class DjActivity extends BaseEntity{
     public String getActiveContent(){
         return activeContent;
     }
+    public void setTeamtotal(Long teamtotal){
+        this.teamtotal = teamtotal;
+    }
+
+    public Long getTeamtotal(){
+        return teamtotal;
+    }
     public void setStartTime(Date startTime){
         this.startTime = startTime;
     }
@@ -119,19 +130,20 @@ public class DjActivity extends BaseEntity{
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("activeId", getActiveId())
-            .append("activeName", getActiveName())
-            .append("photo", getPhoto())
-            .append("activeAddress", getActiveAddress())
-            .append("display", getDisplay())
-            .append("activeContent", getActiveContent())
-            .append("startTime", getStartTime())
-            .append("endTime", getEndTime())
-            .append("createBy", getCreateBy())
-            .append("updateTime", getUpdateTime())
-            .append("status", getStatus())
-            .append("createTime", getCreateTime())
-            .append("remark", getRemark())
-            .toString();
+                .append("activeId", getActiveId())
+                .append("activeName", getActiveName())
+                .append("photo", getPhoto())
+                .append("activeAddress", getActiveAddress())
+                .append("display", getDisplay())
+                .append("activeContent", getActiveContent())
+                .append("teamtotal", getTeamtotal())
+                .append("startTime", getStartTime())
+                .append("endTime", getEndTime())
+                .append("createBy", getCreateBy())
+                .append("updateTime", getUpdateTime())
+                .append("status", getStatus())
+                .append("createTime", getCreateTime())
+                .append("remark", getRemark())
+                .toString();
     }
 }

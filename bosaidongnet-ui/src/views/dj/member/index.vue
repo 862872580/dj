@@ -10,6 +10,15 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="身份证号" prop="idnumber">
+        <el-input
+          v-model="queryParams.idnumber"
+          placeholder="请输入身份证号"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="游戏昵称" prop="gameName">
         <el-input
           v-model="queryParams.gameName"
@@ -57,6 +66,24 @@
           value-format="yyyy-MM-dd"
           placeholder="选择创建时间">
         </el-date-picker>
+      </el-form-item>
+      <el-form-item label="openid" prop="openId">
+        <el-input
+          v-model="queryParams.openId"
+          placeholder="请输入openid"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="用户昵称" prop="nikename">
+        <el-input
+          v-model="queryParams.nikename"
+          placeholder="请输入用户昵称"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -110,6 +137,7 @@
       <el-table-column label="选手用户id
 " align="center" prop="menId" />
       <el-table-column label="姓名" align="center" prop="memName" />
+      <el-table-column label="身份证号" align="center" prop="idnumber" />
       <el-table-column label="游戏昵称" align="center" prop="gameName" />
       <el-table-column label="电话" align="center" prop="phonenumber" />
       <el-table-column label="积分" align="center" prop="score" />
@@ -125,6 +153,9 @@
         </template>
       </el-table-column>
       <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="openid" align="center" prop="openId" />
+      <el-table-column label="用户昵称" align="center" prop="nikename" />
+      <el-table-column label="用户头像" align="center" prop="handimage" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -159,6 +190,9 @@
         <el-form-item label="姓名" prop="memName">
           <el-input v-model="form.memName" placeholder="请输入姓名" />
         </el-form-item>
+        <el-form-item label="身份证号" prop="idnumber">
+          <el-input v-model="form.idnumber" placeholder="请输入身份证号" />
+        </el-form-item>
         <el-form-item label="游戏昵称" prop="gameName">
           <el-input v-model="form.gameName" placeholder="请输入游戏昵称" />
         </el-form-item>
@@ -172,6 +206,15 @@
           <el-radio-group v-model="form.status">
             <el-radio label="1">请选择字典生成</el-radio>
           </el-radio-group>
+        </el-form-item>
+        <el-form-item label="openid" prop="openId">
+          <el-input v-model="form.openId" placeholder="请输入openid" />
+        </el-form-item>
+        <el-form-item label="用户昵称" prop="nikename">
+          <el-input v-model="form.nikename" placeholder="请输入用户昵称" />
+        </el-form-item>
+        <el-form-item label="用户头像" prop="handimage">
+          <el-input v-model="form.handimage" placeholder="请输入用户头像" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -210,12 +253,15 @@ export default {
         pageNum: 1,
         pageSize: 10,
         memName: undefined,
+        idnumber: undefined,
         gameName: undefined,
         phonenumber: undefined,
         score: undefined,
         updateTime: undefined,
         status: undefined,
         createTime: undefined,
+        openId: undefined,
+        nikename: undefined,
       },
       // 表单参数
       form: {},
@@ -247,13 +293,17 @@ export default {
       this.form = {
         menId: undefined,
         memName: undefined,
+        idnumber: undefined,
         gameName: undefined,
         phonenumber: undefined,
         score: undefined,
         updateTime: undefined,
         status: "0",
         createTime: undefined,
-        remark: undefined
+        remark: undefined,
+        openId: undefined,
+        nikename: undefined,
+        handimage: undefined
       };
       this.resetForm("form");
     },

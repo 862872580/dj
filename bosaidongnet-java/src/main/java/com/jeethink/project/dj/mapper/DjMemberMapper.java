@@ -2,12 +2,13 @@ package com.jeethink.project.dj.mapper;
 
 import java.util.List;
 import com.jeethink.project.dj.domain.DjMember;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 选手用户Mapper接口
  * 
  * @author miao
- * @date 2020-09-12
+ * @date 2020-09-14
  */
 public interface DjMemberMapper {
     /**
@@ -57,4 +58,11 @@ public interface DjMemberMapper {
      * @return 结果
      */
     public int deleteDjMemberByIds(String[] menIds);
+
+    /**
+     * 根据openid查询
+     * @param openid 微信id
+     * @return 结果
+     */
+    DjMember selectDjMemberByOpenId(String openid);
 }

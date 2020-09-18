@@ -1,6 +1,7 @@
 package com.jeethink.project.dj.service;
 
 import java.util.List;
+
 import com.jeethink.project.dj.domain.DjTeammid;
 
 /**
@@ -57,4 +58,12 @@ public interface IDjTeammidService {
      * @return 结果
      */
     public int deleteDjTeammidById(Long teammidId);
+
+    int countDjTeammid(long teamId);
+
+    DjTeammid selectDjTeammidByMenId(DjTeammid djTeammid);
+
+    int deleteDjTeammidByMenId(String menId, long teamId);
+
+    int deleteDjTeammidByTeamId(long teamId);
 }

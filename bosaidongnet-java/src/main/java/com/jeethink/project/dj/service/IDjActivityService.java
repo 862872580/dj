@@ -57,4 +57,12 @@ public interface IDjActivityService {
      * @return 结果
      */
     public int deleteDjActivityById(Long activeId);
+
+    /**
+     * 跟新活动图片
+     * @param activeId 活动ID
+     * @param photo 活动图片位置
+     * @return 结果
+     */
+    boolean updateActivePhoto(long activeId, String photo);
 }

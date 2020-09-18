@@ -25,7 +25,7 @@ public class DjTeam extends BaseEntity{
 
     /** 队长id */
     @Excel(name = "队长id")
-    private String memId;
+    private String menId;
 
     /** 比赛场次 */
     @Excel(name = "比赛场次")
@@ -40,13 +40,13 @@ public class DjTeam extends BaseEntity{
     private String status;
 
     /** 满人时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "满人时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "满人时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date fullTime;
 
     /** 签到时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "签到时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "签到时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date signTime;
 
     public void setTeamId(Long teamId){
@@ -63,12 +63,12 @@ public class DjTeam extends BaseEntity{
     public String getTeamName(){
         return teamName;
     }
-    public void setMemId(String memId){
-        this.memId = memId;
+    public void setMenId(String memId){
+        this.menId = memId;
     }
 
-    public String getMemId(){
-        return memId;
+    public String getMenId(){
+        return menId;
     }
     public void setMatchId(Long matchId){
         this.matchId = matchId;
@@ -111,7 +111,7 @@ public class DjTeam extends BaseEntity{
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("teamId", getTeamId())
             .append("teamName", getTeamName())
-            .append("memId", getMemId())
+            .append("memId", getMenId())
             .append("createBy", getCreateBy())
             .append("matchId", getMatchId())
             .append("activeId", getActiveId())

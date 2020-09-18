@@ -2,6 +2,8 @@ package com.jeethink.project.dj.mapper;
 
 import java.util.List;
 import com.jeethink.project.dj.domain.DjTeammid;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 队伍关系Mapper接口
@@ -57,4 +59,20 @@ public interface DjTeammidMapper {
      * @return 结果
      */
     public int deleteDjTeammidByIds(Long[] teammidIds);
+
+    /**
+     * 查询队伍人数
+     * @param teamId 队伍ID
+     * @return 结果
+     */
+    @Select("select count(team_id) from dj_teammid where team_id = #{teamId};")
+    public int countDjTeammid(long teamId);
+
+    DjTeammid selectDjTeammidByMenId(DjTeammid djTeammid);
+
+    @Delete("delete from dj_teammid where men_id = #{menId} and team_id = #{teamId}")
+    int deleteDjTeammidByMenId(String menId, long teamId);
+
+    @Delete("delete from dj_teammid where team_id = #{teamId}")
+    int deleteDjTeammidByTeamId(long teamId);
 }
