@@ -1,6 +1,16 @@
 package com.jeethink.project.dj.controller;
 
 import java.util.List;
+import java.util.Random;
+
+import com.jeethink.common.utils.DateUtils;
+import com.jeethink.project.dj.domain.DjActivity;
+import com.jeethink.project.dj.domain.DjRecord;
+import com.jeethink.project.dj.domain.DjTeam;
+import com.jeethink.project.dj.mapper.DjRecordMapper;
+import com.jeethink.project.dj.service.IDjActivityService;
+import com.jeethink.project.dj.service.IDjRecordService;
+import com.jeethink.project.dj.service.IDjTeamService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +42,14 @@ public class DjMatchController extends BaseController {
     @Autowired
     private IDjMatchService djMatchService;
 
+    @Autowired
+    private IDjTeamService djTeamService;
+
+    @Autowired
+    private IDjRecordService djRecordService;
+
+    @Autowired
+    private IDjActivityService djActivityService;
     /**
      * 查询比赛场次列表
      */
@@ -65,13 +83,76 @@ public class DjMatchController extends BaseController {
     }
 
     /**
-     * 新增比赛场次
+     * 开始比赛场次
      */
     @PreAuthorize("@ss.hasPermi('dj:match:add')")
     @Log(title = "比赛场次", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody DjMatch djMatch) {
-        return toAjax(djMatchService.insertDjMatch(djMatch));
+    public AjaxResult add(@RequestBody DjMatch djMatch, String rank) {
+
+        //判断该活动是否已经开始
+        DjMatch djMatch2 = new DjMatch();
+        djMatch2.setActiveId(djMatch.getActiveId());
+
+        List<DjMatch> djMatches = djMatchService.selectDjMatchList(djMatch2);
+        if (djMatches != null && djMatches.size() > 0 ){
+            return AjaxResult.error("比赛已经开始");
+        }
+
+        //获取参赛队伍数量
+        Long teamTotal = djActivityService.selectDjActivityById(djMatch.getActiveId()).getTeamtotal();
+
+        //添加比赛,并返回比赛id
+        long matchId = djMatchService.insertDjMatch(djMatch).getMatchId();
+
+        //获取所有参加改活动的队伍
+        List<DjTeam> teamList = djTeamService.selectDjTeamListByActiveId(djMatch.getActiveId(), teamTotal);
+
+        //随机获取两个队伍,开始比赛
+        DjTeam teamA = null;
+        DjTeam teamB = null;
+        DjRecord djRecord = new DjRecord();
+        djRecord.setMatchId(matchId);
+
+        int l = teamList.size();
+
+        Random random = new Random();
+        //若果是单数队伍,随机抽出一个队伍轮空
+        if (l % 2 == 1){
+            int n = random.nextInt(teamList.size());
+            teamA = teamList.get(n);
+
+            djRecord.setTeamaId(teamA.getTeamId());
+            djRecord.setStatus("2");
+            djRecord.setRank(rank);
+
+            djRecordService.insertDjRecord(djRecord);
+            teamList.remove(n);
+        }
+
+        l = teamList.size();
+        for (int i = 0; i < l; i ++){
+            int n = random.nextInt(teamList.size());
+            if (teamList.get(n).getSignTime() != null) {
+                if (i % 2 == 1) {
+                    //获取teamA,从第二次循环开始添加比赛记录
+                    teamA = teamList.get(n);
+                    djRecord.setTeamaId(teamA.getTeamId());
+                    djRecord.setTeambId(teamB.getTeamId());
+                    djRecord.setStatus("1");
+                    djRecord.setRank(rank);
+
+                    djRecordService.insertDjRecord(djRecord);
+                } else {
+                    //获取teamB
+                    teamB = teamList.get(n);
+                }
+            }
+            //获取完毕之后删除List中改数据
+            teamList.remove(n);
+        }
+
+        return AjaxResult.success();
     }
 
     /**

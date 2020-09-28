@@ -48,9 +48,12 @@ public class DjMatchServiceImpl implements IDjMatchService {
      * @return 结果
      */
     @Override
-    public int insertDjMatch(DjMatch djMatch) {
+    public DjMatch insertDjMatch(DjMatch djMatch) {
         djMatch.setCreateTime(DateUtils.getNowDate());
-        return djMatchMapper.insertDjMatch(djMatch);
+        djMatch.setStartTime(DateUtils.getNowDate());
+        djMatch.setStatus("1");
+        djMatchMapper.insertDjMatch(djMatch);
+        return djMatch;
     }
 
     /**

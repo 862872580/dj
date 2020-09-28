@@ -34,7 +34,7 @@ public interface DjTeamMapper {
      * @param djTeam 队伍
      * @return 结果
      */
-    public int insertDjTeam(DjTeam djTeam);
+    public DjTeam insertDjTeam(DjTeam djTeam);
 
     /**
      * 修改队伍
@@ -74,4 +74,6 @@ public interface DjTeamMapper {
      * @return 结果
      */
     DjTeam selectDjTeamByName(String teamName);
+
+    List<DjTeam> selectDjTeamListByActiveId(Long activeId,Long teamTotal);
 }

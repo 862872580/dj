@@ -2,6 +2,7 @@ package com.jeethink.project.dj.mapper;
 
 import java.util.List;
 import com.jeethink.project.dj.domain.DjRecord;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 比赛记录Mapper接口
@@ -57,4 +58,6 @@ public interface DjRecordMapper {
      * @return 结果
      */
     public int deleteDjRecordByIds(Long[] recordIds);
+
+    List<DjRecord> selectDjRecordRank(long matchId);
 }

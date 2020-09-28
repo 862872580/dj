@@ -44,10 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where team_id = #{teamId}
     </select>
         
-    <insert id="insertDjTeam" parameterType="DjTeam" useGeneratedKeys="true" keyProperty="teamId">
-        <selectKey keyProperty="teamId" keyColumn="team_id" resultType="java.lang.Long" order="AFTER">
-            select last_insert_id();
-        </selectKey>
+    <insert id="insertDjTeam" parameterType="DjTeam" useGeneratedKeys="true" keyProperty="teamId" >
         insert into dj_team
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="teamName != null">team_name,</if>
@@ -109,5 +106,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{teamId}
         </foreach>
     </delete>
-    
+
+    <select id="selectDjTeamListByActiveId" resultMap="DjTeamResult">
+        select * from dj_team
+        where active_id = #{activeId} and status = 2 order by full_time limit #{teamTotal}
+    </select>
 </mapper>

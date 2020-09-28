@@ -109,4 +109,10 @@ public class DjTeamServiceImpl implements IDjTeamService {
         teamName = teamName.trim();
         return djTeamMapper.selectDjTeamByName(teamName);
     }
+
+    @Override
+    public List<DjTeam> selectDjTeamListByActiveId(Long activeId, Long teamTotal) {
+        return djTeamMapper.selectDjTeamListByActiveId(activeId, teamTotal);
+    }
+
 }

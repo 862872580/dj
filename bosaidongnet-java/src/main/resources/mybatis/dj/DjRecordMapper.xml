@@ -49,6 +49,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectDjRecordVo"/>
         where record_id = #{recordId}
     </select>
+
+    <select id="selectDjRecordRank" parameterType="Long" resultMap="DjRecordResult">
+        <include refid="selectDjRecordVo"/>
+        where match_id = #{matchId} order by rank desc
+    </select>
         
     <insert id="insertDjRecord" parameterType="DjRecord" useGeneratedKeys="true" keyProperty="recordId">
         insert into dj_record

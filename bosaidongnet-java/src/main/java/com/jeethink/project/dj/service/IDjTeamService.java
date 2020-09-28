@@ -61,9 +61,12 @@ public interface IDjTeamService {
     /**
      * 跟新队伍信息
      * @param djTeam 队伍信息
-     * @return
+     * @return 结果
      */
     int updateFullTime(DjTeam djTeam);
 
     DjTeam selectDjTeamByName(String teamName);
+
+    List<DjTeam> selectDjTeamListByActiveId(Long activeId, Long teamTotal);
+
 }

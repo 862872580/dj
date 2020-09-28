@@ -32,7 +32,7 @@ public interface IDjMatchService {
      * @param djMatch 比赛场次
      * @return 结果
      */
-    public int insertDjMatch(DjMatch djMatch);
+    public DjMatch insertDjMatch(DjMatch djMatch);
 
     /**
      * 修改比赛场次

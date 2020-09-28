@@ -85,4 +85,10 @@ public class DjRecordServiceImpl implements IDjRecordService {
     public int deleteDjRecordById(Long recordId) {
         return djRecordMapper.deleteDjRecordById(recordId);
     }
+
+    @Override
+    public List<DjRecord> selectDjRecordRank(long matchId) {
+        return djRecordMapper.selectDjRecordRank(matchId);
+    }
+
 }

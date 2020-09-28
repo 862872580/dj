@@ -26,3 +26,8 @@ npm run build:stage
 # 构建生产环境
 npm run build:prod
 ```
+
+斗界: 王者荣耀比赛小程序
+     1.活动
+     2.创建队伍，添加成员
+     3.开始比赛

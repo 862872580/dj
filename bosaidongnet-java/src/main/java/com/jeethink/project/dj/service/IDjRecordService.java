@@ -57,4 +57,7 @@ public interface IDjRecordService {
      * @return 结果
      */
     public int deleteDjRecordById(Long recordId);
+
+
+    List<DjRecord> selectDjRecordRank(long matchId);
 }
